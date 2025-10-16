@@ -9,6 +9,8 @@ import Home from "./Home/Home";
 import Login from "./Login/Login";
 import Register from "./Register/Register";
 import AuthProvider from "./contexts/AuthContext/AuthProvider";
+import Orders from "./Orders/Orders";
+import Profile from "./Profile/Profile";
 
 // --Routing---
 const router = createBrowserRouter([
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
       {
         path: "/register",
         Component: Register,
+      },
+      {
+        path: "/orders",
+        Component: Orders
+      },
+      {
+        path: "/profile",
+        Component: Profile,
       },
     ],
   },

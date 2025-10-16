@@ -4,11 +4,12 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { auth } from "../../firebase.init";
 
 const AuthProvider = ({ children }) => {
-  
+
   const [user, setUser] = useState(null);
 
   const createUser = (email, password) => {
@@ -18,6 +19,10 @@ const AuthProvider = ({ children }) => {
   const signUser = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
+
+  const signOutUser=()=>{
+    return signOut(auth)
+  }
 
   // ---onAuth must be getting with useStare such that reduce many times call which will reduce time problem and slow problem-->
 
@@ -38,6 +43,7 @@ const AuthProvider = ({ children }) => {
     user,
     createUser,
     signUser,
+    signOutUser,
   };
   return <AuthContext value={authInfo}>{children}</AuthContext>;
 };
