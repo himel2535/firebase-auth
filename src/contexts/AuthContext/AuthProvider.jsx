@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import {
   createUserWithEmailAndPassword,
@@ -8,6 +8,9 @@ import {
 import { auth } from "../../firebase.init";
 
 const AuthProvider = ({ children }) => {
+  
+  const [user, setUser] = useState(null);
+
   const createUser = (email, password) => {
     return createUserWithEmailAndPassword(auth, email, password);
   };
@@ -16,17 +19,23 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  // ---Get current user info--
-  onAuthStateChanged(auth, (currentUser) => {
-    
-    if (currentUser) {
-      console.log("Inside if ", currentUser);
-    } else {
-      console.log("OutSide if", currentUser);
-    }
-  });
+  // ---onAuth must be getting with useStare such that reduce many times call which will reduce time problem and slow problem-->
+
+  useEffect(() => {
+    // --set/mount the observer--
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      console.log("Current User in on state change", currentUser);
+      setUser(currentUser);
+    });
+
+    // --clear the observer on unmount--
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const authInfo = {
+    user,
     createUser,
     signUser,
   };
