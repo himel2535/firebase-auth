@@ -1,15 +1,19 @@
-import React, { use } from 'react';
-import { AuthContext } from '../contexts/AuthContext/AuthContext';
-import { Navigate } from 'react-router';
+import React, { use } from "react";
+import { AuthContext } from "../contexts/AuthContext/AuthContext";
+import { Navigate } from "react-router";
 
-const PrivateRouter = ({children}) => {
-    const {user}=use(AuthContext)
+const PrivateRouter = ({ children }) => {
+  const { user, loading } = use(AuthContext);
 
-    if(user){
-        return children;
-    }
+  if (loading) {
+    return <span className="loading loading-infinity loading-xl "></span>;
+  }
 
-    return <Navigate to="/login"></Navigate>
+  if (user) {
+    return children;
+  }
+
+  return <Navigate to="/login"></Navigate>;
 };
 
 export default PrivateRouter;

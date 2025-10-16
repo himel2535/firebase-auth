@@ -12,15 +12,20 @@ const AuthProvider = ({ children }) => {
 
   const [user, setUser] = useState(null);
 
+  const [loading,setLoading]=useState(true)
+
   const createUser = (email, password) => {
+    setLoading(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signUser = (email, password) => {
+    setLoading(true)
     return signInWithEmailAndPassword(auth, email, password);
   };
 
   const signOutUser=()=>{
+    setLoading(true)
     return signOut(auth)
   }
 
@@ -31,6 +36,7 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       console.log("Current User in on state change", currentUser);
       setUser(currentUser);
+      setLoading(false)
     });
 
     // --clear the observer on unmount--
@@ -41,6 +47,7 @@ const AuthProvider = ({ children }) => {
 
   const authInfo = {
     user,
+    loading,
     createUser,
     signUser,
     signOutUser,
